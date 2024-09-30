@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import NewsList from './views/components/NewsList';
+import NewsDetail from './views/components/NewsDetail';
+import { SocketProvider } from './views/provider/SocketContext';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+import { EnableLikeProvider } from './views/provider/EnableLikeContext';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <EnableLikeProvider>
+      <SocketProvider url={'127.0.0.1:1337'}>
+        <GoogleReCaptchaProvider reCaptchaKey={"6LfGjU4qAAAAAHok935n7WttryEtorwvmR-NWFuR"}>
+
+          <Router>
+            <Routes>
+              <Route path="/" element={<NewsList />} />
+              <Route path="/news/:id" element={<NewsDetail />} />
+            </Routes>
+          </Router>
+        </GoogleReCaptchaProvider>
+      </SocketProvider>
+    </EnableLikeProvider>
   );
-}
+};
 
 export default App;
