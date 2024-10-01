@@ -6,12 +6,11 @@ const SocketContext = createContext<any>(null);
 
 export const SocketProvider: React.FC<{ url: string; children: React.ReactNode }> = ({ url, children }) => {
   const [socket, setSocket] = useState<any>(null);
-
+  let isLoaded = false
   useEffect(() => {
     const socketIo = io(url);
 
     setSocket(socketIo);
-
     return () => {
       socketIo.disconnect();
     };
