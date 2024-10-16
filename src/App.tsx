@@ -10,7 +10,7 @@ const App: React.FC = () => {
   return (
     <EnableLikeProvider>
       <SocketProvider url={'127.0.0.1:1337'}>
-        <GoogleReCaptchaProvider reCaptchaKey={"6LfGjU4qAAAAAHok935n7WttryEtorwvmR-NWFuR"}>
+        <GoogleReCaptchaProvider reCaptchaKey={"your-key-here"}>
 
           <Router>
             <Routes>

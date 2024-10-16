@@ -27,8 +27,8 @@ const NewsList: React.FC = () => {
           <li key={newsItem.id}>
             <h2>{newsItem.ten_bai_viet}</h2>
             <p>By {newsItem.tac_gia} on {newsItem.publishedAt}</p>
-            <Link to={`/news/${newsItem.documentId}`}>Read more</Link>
-            <LikeForm currentLike={newsItem.like} postId={newsItem.documentId}></LikeForm>
+            <Link to={`/news/${newsItem.id}`}>Read more</Link>
+            <LikeForm currentLike={newsItem.like} postId={newsItem.id}></LikeForm>
           </li>
         ))}
       </ul>

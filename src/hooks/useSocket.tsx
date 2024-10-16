@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSocketContext } from '../views/provider/SocketContext';
 import Cookies from 'js-cookie';
 let checkRendered = false
-const useSocket = () => {
+const useSocket = (postId: any) => {
   const socket = useSocketContext();
   const [messages, setMessages] = useState<string[]>([]);
   const [likes, setLikes] = useState<{ [key: string]: number }>({});
@@ -41,18 +41,21 @@ const useSocket = () => {
       // Cookies.set('liked', JSON.stringify(c_js))
       // setIsChange(!isChange)
     });
-    socket.on('likeError', (data: any) => {
-      // const c_js = JSON.parse(Cookies.get('liked') ?? '{}')
-      // if (c_js[data.postId] === 'false') {
-      //   c_js[data.postId] = 'true'
-      // }
-      // else {
-      //   c_js[data.postId] = 'false'
-      // }
-      // Cookies.set('liked', JSON.stringify(c_js))
-      // setIsChange(!isChange)
-      alert(data.message)
-    })
+    // socket.on('likeError', (data: any) => {
+    //   // const c_js = JSON.parse(Cookies.get('liked') ?? '{}')
+    //   // if (c_js[data.postId] === 'false') {
+    //   //   c_js[data.postId] = 'true'
+    //   // }
+    //   // else {
+    //   //   c_js[data.postId] = 'false'
+    //   // }
+    //   // Cookies.set('liked', JSON.stringify(c_js))
+    //   // setIsChange(!isChange)
+    //   if (data.postId === postId) {
+    //     console.log(postId)
+    //     alert(data.message)
+    //   }
+    // })
     socket.on('connect_error', (err: any) => {
       setError(`Connection error: ${err.message}`);
     });

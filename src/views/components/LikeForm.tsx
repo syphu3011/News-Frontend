@@ -7,17 +7,18 @@ import { GetEnableLikeContext } from '../provider/EnableLikeContext';
 
 
 interface LikeFormProps {
-  postId: string; // Đặt kiểu cho postId
+  postId: any; // Đặt kiểu cho postId
   currentLike: number
 }
 
 const LikeForm: React.FC<LikeFormProps> = ({ postId, currentLike }) => {
   // const [token, setToken] = useState("");
-  const { likes, setLikes, sendLike, socket, isChange } = useSocket();
+  const { likes, setLikes, sendLike, socket, isChange } = useSocket(postId);
   const [liked, setLiked] = useState(false);
   const [isSending, setIsSending] = useState(false)
   const enabledLike = GetEnableLikeContext()
   const { executeRecaptcha } = useGoogleReCaptcha();
+  let checkRegis = false
 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -60,7 +61,6 @@ const LikeForm: React.FC<LikeFormProps> = ({ postId, currentLike }) => {
     });
 
   };
-
   useEffect(() => {
     const c_js_liked = JSON.parse(Cookies.get('liked') ?? '{}')
     if (c_js_liked[postId] === 'true') {
@@ -69,7 +69,28 @@ const LikeForm: React.FC<LikeFormProps> = ({ postId, currentLike }) => {
     else {
       setLiked(false)
     }
+    if (!checkRegis) {
+      checkRegis = true
+      socket.on('likeError', (data: any) => {
+        if (data.postId === postId) {
 
+          const c_js = JSON.parse(Cookies.get('liked') ?? '{}')
+          if (c_js[data.postId] === 'false') {
+            c_js[data.postId] = 'true'
+            setLiked(true)
+
+          }
+          else {
+            c_js[data.postId] = 'false'
+            setLiked(false)
+
+          }
+          Cookies.set('liked', JSON.stringify(c_js))
+          console.log(postId)
+          alert(data.message)
+        }
+      })
+    }
   }, [postId, likes]);
   const render = () => {
     if (executeRecaptcha) {
